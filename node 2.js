@@ -47,7 +47,7 @@ app.delete("/cards/:id", (req, res) => {
   res.json({ message: "Card deleted", card: removedCard[0] });
 });
 
-// Start server
+
 app.listen(PORT, () => {
   console.log(`Playing Card API running at http://localhost:${PORT}`);
 });
