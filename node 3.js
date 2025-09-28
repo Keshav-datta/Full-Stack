@@ -25,7 +25,7 @@ function releaseExpiredLocks() {
       seat.status = "available";
       seat.lockedBy = null;
       seat.lockExpiry = null;
-      console.log(`🔓 Lock expired for Seat ${seat.id}`);
+      console.log(`Lock expired for Seat ${seat.id}`);
     }
   });
 }
@@ -60,7 +60,7 @@ app.post("/seats/:id/lock", (req, res) => {
 
   seat.status = "locked";
   seat.lockedBy = userId;
-  seat.lockExpiry = Date.now() + 60 * 1000; // 1 minute lock
+  seat.lockExpiry = Date.now() + 60 * 1000; 
 
   res.json({ message: `Seat ${seatId} locked for user ${userId} for 1 minute`, seat });
 });
@@ -90,7 +90,7 @@ app.post("/seats/:id/confirm", (req, res) => {
     seat.status = "booked";
     seat.lockedBy = null;
     seat.lockExpiry = null;
-    return res.json({ message: `✅ Seat ${seatId} successfully booked by ${userId}`, seat });
+    return res.json({ message: `Seat ${seatId} successfully booked by ${userId}`, seat });
   }
 
   if (seat.status === "booked") {
@@ -98,7 +98,6 @@ app.post("/seats/:id/confirm", (req, res) => {
   }
 });
 
-// Start server
 app.listen(PORT, () => {
-  console.log(`🎟️ Ticket Booking System running at http://localhost:${PORT}`);
+  console.log(`Ticket Booking System running at http://localhost:${PORT}`);
 });
