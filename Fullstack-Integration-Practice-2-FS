@@ -1,0 +1,131 @@
+// App.jsk
+
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { addToCart, removeFromCart, decreaseQuantity, clearCart } from "./store/cartSlice";
+import "./App.css";
+
+function App() {
+  const dispatch = useDispatch();
+  const cartItems = useSelector(state => state.cart.items);
+
+  const products = [
+    { name: "Laptop", price: 1200 },
+    { name: "Mouse", price: 25 },
+    { name: "Keyboard", price: 45 }
+  ];
+
+  return (
+    <div className="app-container">
+      <h1>My Shop</h1>
+
+      <h2>Products</h2>
+      <div className="product-list">
+        {products.map((product, index) => (
+          <div key={index} className="product-box">
+            <h3>{product.name}</h3>
+            <p>₹{product.price}</p>
+            <button onClick={() => dispatch(addToCart(product))}>Add to Cart</button>
+          </div>
+        ))}
+      </div>
+
+      <h2>Shopping Cart</h2>
+      <div className="cart-list">
+        {cartItems.length === 0 && <p>Cart is empty</p>}
+        {cartItems.map((item, index) => (
+          <div key={index} className="product-box">
+            <h4>{item.name}</h4>
+            <p>₹{item.price} × {item.quantity}</p>
+            <button onClick={() => dispatch(decreaseQuantity(item.name))}>-</button>
+            <button onClick={() => dispatch(addToCart(item))}>+</button>
+            <button onClick={() => dispatch(removeFromCart(item.name))}>Remove</button>
+          </div>
+        ))}
+        {cartItems.length > 0 && (
+          <button className="clear-cart" onClick={() => dispatch(clearCart())}>Clear Cart</button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default App;
+
+
+// App.css
+
+.app-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  color: #000; /* Ensure text is black */
+}
+
+.product-list, .cart-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.product-box {
+  width: 180px;
+  padding: 15px;
+  border: 2px solid #007bff;
+  border-radius: 10px;
+  background-color: #fff; /* White background */
+  color: #000;           /* Black text */
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.product-box h3, .product-box h4 {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.product-box p {
+  margin: 5px 0;
+  font-weight: bold;
+}
+
+.product-box button {
+  padding: 6px 10px;
+  margin: 5px 2px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.product-box button:hover {
+  background-color: #0056b3;
+}
+
+.clear-cart {
+  padding: 8px 15px;
+  background-color: red;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+// main.jsk
+
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import { Provider } from "react-redux";
+import { store } from "./store/store";
+import "./index.css";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>
+);
